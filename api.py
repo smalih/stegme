@@ -1,7 +1,6 @@
 import requests
 import shutil
 
-from steg import *
 
 category = 'nature'
 categories='nature, city, technology, food, still_life, abstract, wildlife'.split(", ")

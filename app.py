@@ -10,12 +10,16 @@ from steg_lsb import encode, decode
 
 
 UPLOAD_FOLDER = './uploads/'
+ENCODE_FOLDER = './encoded/'
+DECODE_FOLDER = './decode/'
 HIDDEN_FOLDER = './hidden/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['HIDDEN_FOLDER'] = HIDDEN_FOLDER
+app.config['ENCODE_FOLDER'] = ENCODE_FOLDER
+app.config['DECODE_FOLDER'] = DECODE_FOLDER
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 # print("API Key: ", os.getenv('API_KEY'))
 
@@ -62,11 +66,22 @@ def upload():
     if request.method == 'POST':
         if form.validate_on_submit():
             filename = secure_filename(form.image.data.filename)
-            form.image.data.save(app.config['UPLOAD_FOLDER'] + filename)
             message = request.form['message']
-            print("from form: ", message)
-            encode(app.config['UPLOAD_FOLDER'] + filename, message, app.config['HIDDEN_FOLDER'] + filename)
-            flash('Message successfully encoded', 'success')
+            operation = request.form['operation']
+            if operation == 'Encode':
+                if not(message):
+                    flash("Message field cannot be left blank")
+                else:
+                    form.image.data.save(app.config['UPLOAD_FOLDER'] + filename)
+                    encode(app.config['UPLOAD_FOLDER'] + filename, message, app.config['ENCODE_FOLDER'] + filename)
+                    flash('Message successfully encoded', 'success')
+                    return redirect(url_for('download', name=filename))
+            elif operation == 'Decode':
+                form.image.data.save(app.config['DECODE_FOLDER'] + filename)
+                hidden_message = decode(os.path.join(app.config['DECODE_FOLDER'] + filename), )
+                print("decode output: ", hidden_message)
+                return "<h1>" + hidden_message + "<h1>"
+
             return redirect(url_for('upload'))
     return render_template('index.html', form=form)
     #         if 'file' not in request.files:
@@ -110,8 +125,6 @@ def index():
 
 
 @app.route('/hidden/<name>')
-def decode_file(name):
-    hidden_message = decode(os.path.join(app.config['HIDDEN_FOLDER'], name), )
-    print("decode output: ", hidden_message)
-    return "<h1>" + hidden_message + "<h1>"
-    return send_from_directory(app.config['HIDDEN_FOLDER'], name)
+def download(name):
+    return send_from_directory(app.config['ENCODE_FOLDER'], name)
+
