@@ -80,6 +80,8 @@ def decode(src):
     print(hidden_message)
     return hidden_message
 
-
-encode('test.png', "hello world", 'encoded_test.png')
-print(decode("encoded_test.png"))
+# input_src = input("Enter input location")
+# message = input("Enter message: ")
+# encode(input_src, message, 'out.png')
+# output_src = input("Enter output location: ")
+# print(decode(output_src))
