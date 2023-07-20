@@ -1,6 +1,8 @@
 import requests
 import shutil
 
+from steg import *
+
 category = 'nature'
 categories='nature, city, technology, food, still_life, abstract, wildlife'.split(", ")
 api_url = 'https://api.api-ninjas.com/v1/randomimage?category={}'.format(category)
@@ -10,3 +12,4 @@ if response.status_code == requests.codes.ok:
         shutil.copyfileobj(response.raw, out_file)
 else:
     print("Error:", response.status_code, response.text)
+
