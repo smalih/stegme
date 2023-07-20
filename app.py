@@ -61,11 +61,12 @@ def upload():
     form = UploadForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            filename = secure_filename(form.file.data.filename)
-            form.file.data.save(app.config['UPLOAD_FOLDER'] + filename)
+            filename = secure_filename(form.image.data.filename)
+            form.image.data.save(app.config['UPLOAD_FOLDER'] + filename)
             message = request.form['message']
             print("from form: ", message)
             encode(app.config['UPLOAD_FOLDER'] + filename, message, app.config['HIDDEN_FOLDER'] + filename)
+            flash('Message successfully encoded', 'success')
             return redirect(url_for('upload'))
     return render_template('index.html', form=form)
     #         if 'file' not in request.files:

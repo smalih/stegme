@@ -25,9 +25,7 @@ def encode(src, message, dest):
     min_pixels = ceil(len(b_message) / 3)
     if min_pixels > total_pixels:
         raise ValueError("input image does not have enough bits to encode message. Please choose an image with a larger file size")
-    # print(min_pixels)
-    # print(img_array[0][1])
-    # print(width, height)
+
     # print(img_array.size) # no. of r,g,b,a bytes (= len(img_array) * 4)
     # print(len(img_array)) # no. pixels (= width * height)
     
@@ -45,10 +43,6 @@ def encode(src, message, dest):
     img_array=img_array.reshape(height, width, n)
     enc_img = Image.fromarray(img_array.astype('uint8'), input_img.mode)
     enc_img.save(dest)
-    # print(img_array[pixel][colour])
-    # print(len(b_message))
-    # print(img_array[0])
-    # print(message)
 
 def decode(src):
     

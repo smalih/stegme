@@ -1,18 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/stylesheet.css') }}"> -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+            charset="utf-8">
         <title>Upload new File</title>
     </head>
 <body>
-    <!-- <h1>Upload new File</h1> -->
+    {% with messages=get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissable fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <h1>Upload new File</h1>
     <form method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         {{ form.message.label }}
         {{ form.message }}
         {{ form.label }}
-        {{ form.file }}
-    
+        {{ form.image }}
+        <br><span class="validation_error">{{ ', '.join(form.image.errors) }}</span><br>
         {{ form.submit }}
     </form>
 </body>
