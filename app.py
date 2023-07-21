@@ -66,6 +66,7 @@ def upload():
     if request.method == 'POST':
         if form.validate_on_submit():
             filename = secure_filename(form.image.data.filename)
+            print(filename)
             message = request.form['message']
             operation = request.form['operation']
             if operation == 'Encode':
@@ -73,7 +74,7 @@ def upload():
                     flash("Message field cannot be left blank")
                 else:
                     form.image.data.save(app.config['UPLOAD_FOLDER'] + filename)
-                    encode(app.config['UPLOAD_FOLDER'] + filename, message, app.config['ENCODE_FOLDER'] + filename)
+                    encode(form.image.data, message, app.config['ENCODE_FOLDER'] + filename)
                     flash('Message successfully encoded', 'success')
                     return redirect(url_for('download', name=filename))
             elif operation == 'Decode':

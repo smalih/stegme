@@ -42,7 +42,7 @@ def encode(src, message, dest):
     
     img_array=img_array.reshape(height, width, n)
     enc_img = Image.fromarray(img_array.astype('uint8'), input_img.mode)
-    enc_img.save(dest)
+    enc_img.save(dest, format="PNG")
 
 def decode(src):
     
