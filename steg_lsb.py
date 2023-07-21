@@ -33,10 +33,12 @@ def encode(src, message, dest):
     for pixel in range(min_pixels):
         for colour in range(0,3):
             # print(img_array[pixel][colour])
+            if index >= len(b_message):
+                print("hello")
             try:
                 img_array[pixel][colour] = int(bin(img_array[pixel][colour])[2:7] + b_message[index], 2)
             except IndexError:
-                print("Error: ", pixel)
+                print("Error: ", pixel, index, len(b_message))
                 break 
             index+=1
     
