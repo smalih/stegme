@@ -3,7 +3,7 @@
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
             charset="utf-8">
-        <title>Upload new File</title>
+        <title>LSB Image Steganography</title>
     </head>
 <body>
     {% with messages=get_flashed_messages(with_categories=true) %}
@@ -18,7 +18,7 @@
         {% endfor %}
     {% endif %}
     {% endwith %}
-    <h1>Upload new File</h1>
+    <h1>LSB Image Steganography</h1>
     <form method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         {{ form.message.label }}

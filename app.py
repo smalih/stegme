@@ -3,7 +3,8 @@ from flask import Flask, flash, render_template, request, redirect, url_for, sen
 from werkzeug.utils import secure_filename
 from forms import UploadForm
 import requests
-import shutil
+from PIL import Image
+import time
 
 # from steg import Encode, Decode
 from steg_lsb import encode, decode
@@ -60,26 +61,47 @@ def allowed_file(filename):
 #     </form>
 #     '''
 
+
+
+category = 'nature'
+categories='nature, city, technology, food, still_life, abstract, wildlife'.split(", ")
+
+
+def get_random_image_from_api(category='nature'):
+    api_url = 'https://api.api-ninjas.com/v1/randomimage?category={}'.format(category)
+    response = requests.get(api_url, headers={'X-Api-Key': 'vUkWtBsXjrU12mz7Ep8YdQ==TYN8vUz4sZ34Rfe2', 'Accept': 'image/png'}, stream=True)
+    if response.status_code == requests.codes.ok:
+        return response.raw
+    raise ValueError("Error - status code NOT OK")
+
+
+
+
 @app.route('/', methods=['GET', 'POST'])
 def upload():
     form = UploadForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            filename = secure_filename(form.image.data.filename)
-            print(filename)
             message = request.form['message']
             operation = request.form['operation']
+            
             if operation == 'Encode':
                 if not(message):
                     flash("Message field cannot be left blank")
+                    return redirect(url_for('upload'))
+                if not(form.image.data) :
+                    print("No image supplied, getting random one from API")
+                    image = get_random_image_from_api()
                 else:
-                    form.image.data.save(app.config['UPLOAD_FOLDER'] + filename)
-                    encode(form.image.data, message, app.config['ENCODE_FOLDER'] + filename)
-                    flash('Message successfully encoded', 'success')
-                    return redirect(url_for('download', name=filename))
+                    image = form.image.data
+            
+                # form.image.data.save(app.config['UPLOAD_FOLDER'] + filename)
+                filename = time.strftime("%d_%m_%Y-%H_%M_%S") + ".png"
+                encode(image, message, app.config['ENCODE_FOLDER'] + filename)
+                flash('Message successfully encoded', 'success')
+                return redirect(url_for('download', name=filename))
             elif operation == 'Decode':
-                form.image.data.save(app.config['DECODE_FOLDER'] + filename)
-                hidden_message = decode(os.path.join(app.config['DECODE_FOLDER'] + filename), )
+                hidden_message = decode(form.image.data)
                 print("decode output: ", hidden_message)
                 return "<h1>" + hidden_message + "<h1>"
 

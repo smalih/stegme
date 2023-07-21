@@ -7,7 +7,6 @@ class UploadForm(FlaskForm):
     message = StringField("Message")
     operation = RadioField("Operation", choices=['Encode', 'Decode'])
     image = FileField("image", validators=[
-        FileRequired(),
         FileAllowed(['png'], "PNG images only!")
     ])
     submit = SubmitField()
