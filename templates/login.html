@@ -1,0 +1,35 @@
+<!-- {% extends "layout.html" %}
+{% set active_page = "" %} -->
+{% block title %}Login{% endblock %}
+
+{% block content %}
+        <h1>Login</h1>
+        <div class="form-container central">
+            <form class="main-text" method="POST" action="{{ url_for('login') }}">
+                {{ form.hidden_tag() }}
+                {% for message in form.email.errors %}
+                <div class="flash">{{ message }}</div>
+                {% endfor %}
+                <div class="form-group">
+                    {{ form.email.label }} {{ form.email(class="form-control",
+                    placeholder="welcome@events.co.uk") }}
+                </div>            
+    
+                {% for message in form.password.errors %}
+                <div class="flash">{{ message }}</div>
+                {% endfor %}
+                <div class="form-group">
+                    {{ form.password.label }} {{ form.password(class="form-control")}}
+                </div>
+    
+                {% for message in form.remember_me.errors %}
+                <div class="flash">{{ message }}</div>
+                {% endfor %}
+                <div class="form-group">
+                    {{ form.remember_me(class="form-control")}} {{ form.remember_me.label }} 
+                </div>
+                {{ form.submit(class="user-button") }}
+            </form>
+            <p>Don't have an account? Click <a href="{{ url_for('register') }}"">here</a> to register!</p>
+        </div>
+{% endblock %}

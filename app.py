@@ -6,7 +6,7 @@ from forms import UploadForm, RegisterForm, LoginForm
 import requests
 import time
 import random
-from werkzeug import security
+import bcrypt
 
 # from steg import Encode, Decode
 from steg_lsb import encode, decode
@@ -135,11 +135,9 @@ def register():
                 flash('Email address already registered. Please try again with a different email address or log in', category='error')
             elif (password != confirm) :
                 flash('Passwords do not match', category='error')
-            elif not (request.form['organiserCode'] == '' or request.form['organiserCode'] == 'Dc5_G1gz'):
-                flash('Incorrect organiser code entered. Please try again or leave the organiser code field blank to register as a user', category='error')
             
             else:
-                hashed = security.generate_password_hash(password)  
+                hashed = bcrypt.hashpw(password.encode(), salt=bcrypt.gensalt())  
                 new_user = User(email, hashed)
                 new_user.fname = fname
                 new_user.surname = surname
@@ -147,7 +145,8 @@ def register():
                 db.session.commit()
                 login_user(new_user)
                 new_user = User.query.filter_by(email=email).first() # is this line needed?
-                return redirect(url_for('unverified'))
+                flash('You have successfully registered', 'success')
+                return redirect(url_for('upload'))
         else:
             flash('Register form not valid', category='error')
     return render_template('register.html', form=form)
@@ -167,7 +166,7 @@ def login():
             user = User.query.filter_by(email=email).first()
             if user:
                 registered_hash = user.password_hash
-                if security.check_password_hash(registered_hash, password):
+                if bcrypt.checkpw(password.encode(), registered_hash):
                     flash(f'You have been logged in', category='success')
                     remember = True if request.form.get('remember_me') else False
                     login_user(user, remember=remember)
@@ -181,7 +180,9 @@ def login():
 
 
 def dbinit():
-    admin_user = User('admin@admin.com', 'pbkdf:sha256:fc8252c8dc55839967c58b9ad755a59b61b67c13227ddae4bd3f78a38bf394f7')
+    passwd = 'adminadmin'
+    hashed = bcrypt.hashpw(passwd.encode(), salt=bcrypt.gensalt())
+    admin_user = User('admin@admin.com', hashed)
     admin_user.fname = 'Admin'
     admin_user.surname = 'User'
     db.session.add(admin_user)
@@ -190,3 +191,10 @@ def dbinit():
 
 with app.app_context():
     dbinit()
+
+@app.route('/logout')
+def logout():
+    if current_user.is_authenticated:
+        flash('You have been logged out', category='success')
+        logout_user()
+    return redirect(url_for('index'))
