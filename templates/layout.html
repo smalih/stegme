@@ -10,10 +10,9 @@
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
             charset="utf-8">
-        <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"
-            charset="utf-8"> -->
-        <!-- <script src="{{ url_for('static', filename='js/jquery-3.6.3.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/main.js') }}"></script> -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"
+            charset="utf-8">
+        <script src="{{ url_for('static', filename='js/jquery-3.6.3.min.js') }}"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}{% endblock %}</title>
     </head>
@@ -21,7 +20,7 @@
         <nav>
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="{{ url_for('upload') }}"><img class="nav-logo" src="{{ url_for('static', filename='images/logo2.svg') }}"></a>
+                    <a class="navbar-brand" href="{{ url_for('upload') }}"><img class="nav-logo" src="{{ url_for('static', filename='images/hacker.png') }}"></a>
                 </div>
                 <!-- <ul class="navbar-list">
                     {% for route_name, title in navigation_bar %}
@@ -36,10 +35,6 @@
                     
                         <ul class="navbar-list navbar-profile">
                             <li><a id="logout-text" class="nav-item-link" href="{{ url_for('logout') }}">Log Out</a></li>
-                            <li><a id="inbox_logo" class="nav-item-link" href="{{ url_for('inbox') }}"><img width="25px" src="{{ url_for('static', filename='images/inbox_icon.svg') }}"></a></li>
-                           {% if current_user.notifications | length  > 0 %}
-                           {{ current_user.notifications | length }}
-                           {% endif %}
                         </ul>
                     {% else %}
                     <ul class="navbar-list navbar-profile">

@@ -67,10 +67,14 @@ def get_random_image_from_api():
 def upload():
     form = UploadForm()
     if request.method == 'POST':
-        if form.validate_on_submit():
+        # if form.validate_on_submit():
+        if True:
+    
             message = request.form['message']
             operation = request.form['operation']
-            
+            image = request.form.get('image')
+            for k in request.form:
+                print(k)
             if operation == 'Encode':
                 if not(message):
                     flash("Message field cannot be left blank")

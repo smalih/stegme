@@ -1,0 +1,279 @@
+/* @font-face {
+}
+body {
+  background-color: #07002d;
+  color: #ffffff;
+}
+*/
+.hidden {
+    display: none;
+  }
+  
+  /* @font-face{
+    font-family: trial;
+    src: url('../norwester.otf');
+    font-weight: bold;
+  } */
+  
+  body {
+    background-color: #fffaf6;
+    color: #5a3515;
+    font-family: trial;
+    min-width: 200px;
+  } 
+  
+  #content {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+  
+  
+  
+  #toggleUserButton {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-weight: bold;
+    padding: 0px;
+    margin: 0px;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+    color: #a16a16;
+  }
+  
+  #toggleUserButton:hover {
+      text-decoration: underline;
+  }
+  
+  #logout-text {
+      color: #5a3515;
+  }
+     
+  .navbar-list {
+    list-style: none;
+    display: inline-flex;
+    font-size: max(20px, 1.5vw);
+    /* width: auto; */
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar-list > li > a{
+    position: relative;
+    display: block;
+    padding: 15px 15px;
+    text-decoration: none;
+    color: #5a3515;
+  }
+  .nav-item-link {
+      padding: 15px 15px;
+  }
+  .nav-item-link:hover {
+      text-decoration: underline;
+  }
+  
+  .active {
+    text-decoration: underline;
+  }
+  
+  .container-fluid {
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 25px;
+    margin-right: auto;
+    margin-left: auto;
+    color: #5a3515
+  }
+  
+  .navbar-header {
+    margin-right: 0;
+    margin-left: 0;
+    float: left;
+  }
+  
+  .navbar-brand {
+    float: left;
+    height: 50px;
+    padding: 15px 15px;
+    line-height: 18px;;
+  }
+  
+  .navbar-footer {
+    margin-right: 0;
+    margin-left: 0;
+    float: right;
+  }
+  
+  .navbar-profile {
+    float: right;
+    height: 50px;
+    /* padding: 15px 15px; */
+  }
+  
+  .page-heading {
+    text-align: center;
+  }
+  
+  .event-group {
+    display: flex;
+    justify-content: space-between;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 15px;
+    padding-left: 15px;
+  
+  }
+  
+  .event-item {
+    clear: both;
+    padding:10px;
+    overflow: hidden;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 2px solid #5a3515;
+    border-radius: 15px;
+  }
+  
+  .ticket-event-item {
+      clear: both;
+      padding:10px;
+      overflow: hidden;
+      width: 30%;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 10px;
+      padding-right: 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border: 2px solid #5a3515;
+      border-radius: 15px;
+    }
+  
+  .error{
+  display: none;
+  margin-left: 10px;
+  }		
+  
+  .error_show{
+  color: red;
+  margin-left: 10px;
+  }
+  
+  input.invalid, textarea.invalid{
+  border: 2px solid red;
+  }
+  
+  input.valid, textarea.valid{
+  border: 2px solid green;
+  }
+  
+  .add-event {
+    height: 10px;
+    padding: 15px 32px;
+  }
+  
+  .spaces-remaining {
+      color: red
+  }
+  
+  .navbar-brand {
+      text-decoration: none;
+      color: #5a3515;
+  }
+  
+  .main-text {
+      max-width: 700px; 
+      padding: 25px;
+      margin-bottom: 30px;
+  }
+  
+  .nav-logo {
+  max-width: 50px;
+  height: auto;
+  }
+  
+  .form-container {
+      margin: auto;
+      padding: 25px;
+      margin-bottom: 30px;
+      width: 35%;
+      outline: auto;
+      outline-style: solid;
+      outline-color: #5a3515;
+      outline-width: 2px;
+      outline-offset: 0px;
+      border-radius: 15px;
+  }
+  
+  .user-button {
+      background-color: #5a3515;
+      color: #fffaf6;
+      border-radius: 5px;
+      display: inline-block;
+      text-decoration: none;
+      /* border: none; */
+  }
+  
+  #add-event-button {
+      margin: 0 auto;
+      display: block;
+      /* border: none; */
+      padding: 5px 5px;
+  }
+  
+  a {
+      color: #a16a16;
+  }
+  
+  .left-form-button {
+      float: left;
+  }
+  
+  .right-form-button {
+      float:right;
+  }
+  
+  .location-icon {
+      float:left;
+      height: 25px;
+  }
+  
+  .clear {
+      clear: both;
+  }
+  
+  .okay-button {
+      float: right;
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1;
+      color: #000;
+      text-shadow: 0 1px 0 #fff;
+      opacity: .5;
+      outline: none;
+      background-color: transparent;
+  }
+  
+  .promote-attendee {
+      margin-bottom: 10px;
+  }
+  
+  #inbox-logo {
+      padding-right: 0px;
+  }
+  
+  #remember_me {
+      margin-right: 5px;
+      position: relative;
+      aspect-ratio: 1 / 1;
+      height: 25px;
+      width: auto;
+      accent-color: #5a3515;
+      float: left;
+  }
