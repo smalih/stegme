@@ -1,10 +1,11 @@
 import os
-from flask import Flask, flash, render_template, request, redirect, url_for, send_from_directory
+from flask import Flask, flash, render_template, request, redirect, url_for, send_from_directory, send_file
 from werkzeug.utils import secure_filename
 from forms import UploadForm
 import requests
 import time
 import random
+
 
 # from steg import Encode, Decode
 from steg_lsb import encode, decode
@@ -58,7 +59,8 @@ def upload():
             
                 # form.image.data.save(app.config['UPLOAD_FOLDER'] + filename)
                 filename = time.strftime("%d_%m_%Y-%H_%M_%S") + ".png"
-                encode(image, message, app.config['ENCODE_FOLDER'] + filename)
+                enc_image = encode(image, message, app.config['ENCODE_FOLDER'] + filename)
+                # return send_file(enc_image, as_attachment=True, download_name=filename)
                 flash('Message successfully encoded', 'success')
                 return redirect(url_for('download', name=filename))
             elif operation == 'Decode':

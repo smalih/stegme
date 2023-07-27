@@ -1,6 +1,7 @@
 from PIL import Image
 from math import ceil
 import numpy as np
+from io import BytesIO
 
 
 terminating_string = "$end$"
@@ -44,6 +45,9 @@ def encode(src, message, dest):
     
     img_array=img_array.reshape(height, width, n)
     enc_img = Image.fromarray(img_array.astype('uint8'), input_img.mode)
+    # s = BytesIO()
+    # enc_img.save(s, format="png")
+    # return enc_img
     enc_img.save(dest, format="PNG")
 
 def decode(src):
