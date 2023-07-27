@@ -1,0 +1,70 @@
+<!-- {% set navigation_bar = [
+
+] -%}
+
+{% set active_page = active_page -%} -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+            charset="utf-8">
+        <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"
+            charset="utf-8"> -->
+        <!-- <script src="{{ url_for('static', filename='js/jquery-3.6.3.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script> -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+    <body>
+        <nav>
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{{ url_for('upload') }}"><img class="nav-logo" src="{{ url_for('static', filename='images/logo2.svg') }}"></a>
+                </div>
+                <!-- <ul class="navbar-list">
+                    {% for route_name, title in navigation_bar %}
+                    <li {% if route_name == active_page %} class="active"{% endif %}><a class="nav-item-link" href="{{ url_for(route_name) }}">{{ title }}</a>
+                    </li>
+                    {% endfor %}
+                </ul> -->
+                <div class="navbar-footer">
+                    <!-- <a class="navbar-profile" href="{{ url_for('index') }}"><img width="40px" src="{{ url_for('static', filename='images/profile_icon.svg') }}"></a>
+                     -->
+                     {% if current_user.is_authenticated %}
+                    
+                        <ul class="navbar-list navbar-profile">
+                            <li><a id="logout-text" class="nav-item-link" href="{{ url_for('logout') }}">Log Out</a></li>
+                            <li><a id="inbox_logo" class="nav-item-link" href="{{ url_for('inbox') }}"><img width="25px" src="{{ url_for('static', filename='images/inbox_icon.svg') }}"></a></li>
+                           {% if current_user.notifications | length  > 0 %}
+                           {{ current_user.notifications | length }}
+                           {% endif %}
+                        </ul>
+                    {% else %}
+                    <ul class="navbar-list navbar-profile">
+                        <a id="logout-text" class="nav-item-link" href="{{ url_for('login') }}">Log In</a>
+                    </ul>
+                    {% endif %}
+                     
+                </div>
+            </div>
+        </nav>
+        {% with messages=get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissable fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+                    
+        <div id="content">
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>
