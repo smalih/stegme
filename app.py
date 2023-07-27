@@ -1,5 +1,5 @@
 import os
-from flask import Flask, flash, render_template, request, redirect, url_for, send_from_directory, send_file
+from flask import Flask, flash, render_template, request, redirect, url_for, send_from_directory, send_file, session
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
 from forms import UploadForm, RegisterForm, LoginForm
@@ -92,10 +92,18 @@ def upload():
             elif operation == 'Decode':
                 hidden_message = decode(image)
                 print("decode output: ", hidden_message)
-                return "<h1>" + hidden_message + "<h1>"
+                session['hidden_message'] = hidden_message
+                return redirect(url_for('decoded'))
 
             return redirect(url_for('upload'))
     return render_template('index.html', form=form)
+
+
+
+@app.route('/decoded', methods=['GET'])
+def decoded():
+    hidden_message = session.get('hidden_message')
+    return render_template('decoded.html', hidden_message=hidden_message)
 
 @app.route('/genfile', methods=['GET'])
 def gen_file():
