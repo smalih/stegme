@@ -37,7 +37,6 @@ with app.app_context():
     # dbinit()
     db.drop_all()
     db.create_all()
-    print("yeah")
 
 
 login_manager = LoginManager()
@@ -198,3 +197,7 @@ def logout():
         flash('You have been logged out', category='success')
         logout_user()
     return redirect(url_for('index'))
+
+
+if __name__ == '__main__':
+    app.run(debug=True, host="0.0.0.0")
