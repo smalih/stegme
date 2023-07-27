@@ -69,21 +69,19 @@ def upload():
     if request.method == 'POST':
         # if form.validate_on_submit():
         if True:
-    
             message = request.form['message']
             operation = request.form['operation']
-            image = request.form.get('image')
-            for k in request.form:
-                print(k)
+            image = request.files.get('image')
+
+            print("image type:", type(image))
+ 
             if operation == 'Encode':
                 if not(message):
                     flash("Message field cannot be left blank")
                     return redirect(url_for('upload'))
-                if not(form.image.data) :
+                if not(image) :
                     print("No image supplied, getting random one from API")
                     image = get_random_image_from_api()
-                else:
-                    image = form.image.data
             
                 # form.image.data.save(app.config['UPLOAD_FOLDER'] + filename)
                 filename = time.strftime("%d_%m_%Y-%H_%M_%S") + ".png"
@@ -92,7 +90,7 @@ def upload():
                 flash('Message successfully encoded', 'success')
                 return redirect(url_for('download', name=filename))
             elif operation == 'Decode':
-                hidden_message = decode(form.image.data)
+                hidden_message = decode(image)
                 print("decode output: ", hidden_message)
                 return "<h1>" + hidden_message + "<h1>"
 
