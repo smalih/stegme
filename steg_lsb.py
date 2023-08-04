@@ -8,7 +8,11 @@ terminating_string = "$end$"
 
 
 def encode(src, message, dest=None):
-    input_img = Image.open(src, 'r')
+    try:
+        input_img = Image.open(src, 'r')
+    except FileNotFoundError:
+        print("File cannot be found. Please ensure file exists.")
+        return
     width, height = input_img.size
     img_array = np.array(list(input_img.getdata()))
     print(input_img.mode)
@@ -54,7 +58,11 @@ def encode(src, message, dest=None):
         return enc_img
 
 def decode(src):
-    
+    try:
+        input_img = Image.open(src, 'r')
+    except FileNotFoundError:
+        print("File cannot be found. Please ensure file exists.")
+        return
     encoded_img = Image.open(src, 'r')
     img_array = np.array(list(encoded_img.getdata()))
 
