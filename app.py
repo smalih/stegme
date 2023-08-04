@@ -86,9 +86,15 @@ def upload():
                 # form.image.data.save(app.config['UPLOAD_FOLDER'] + filename)
                 filename = time.strftime("%d_%m_%Y-%H_%M_%S") + ".png"
                 enc_image = encode(image, message, app.config['ENCODE_FOLDER'] + filename)
+                # enc_image2 = encode(image, message)
+
                 # return send_file(enc_image, as_attachment=True, download_name=filename)
                 flash('Message successfully encoded', 'success')
-                return redirect(url_for('download', name=filename))
+                print("encoded")
+                # session['encoded_file'] = enc_image2
+                # session['encoded_filename'] = filename
+                print("after storing in session var")
+                return render_template('encoded.html', filename=filename)
             elif operation == 'Decode':
                 hidden_message = decode(image)
                 print("decode output: ", hidden_message)
@@ -119,14 +125,18 @@ def gen_file():
         print("Error:", response.status_code, response.text)
     return redirect(url_for('upload_file'))
 
-@app.route('/encoded/<name>')
+@app.route('/download/<name>', methods=["POST"])
 def download(name):
-    return send_from_directory(app.config['ENCODE_FOLDER'], name, as_attachment=True)
+    print("in download")
+    # return send_from_directory(app.config['ENCODE_FOLDER'], name, as_attachment=True)
+    return send_file(app.config['ENCODE_FOLDER']+ name, as_attachment=True)
+    # return render_template('encoded.html', file=session['encoded_file'], name=name)
 
 
 @app.route('/index')
 def index():
     return redirect(url_for('upload'))
+
 # user registration
 @app.route('/register', methods=['GET', 'POST'])
 def register():

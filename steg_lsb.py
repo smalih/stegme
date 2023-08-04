@@ -7,7 +7,7 @@ from io import BytesIO
 terminating_string = "$end$"
 
 
-def encode(src, message, dest):
+def encode(src, message, dest=None):
     input_img = Image.open(src, 'r')
     width, height = input_img.size
     img_array = np.array(list(input_img.getdata()))
@@ -48,7 +48,10 @@ def encode(src, message, dest):
     # s = BytesIO()
     # enc_img.save(s, format="png")
     # return enc_img
-    enc_img.save(dest, format="PNG")
+    if dest:
+        enc_img.save(dest, format="PNG")
+    else:
+        return enc_img
 
 def decode(src):
     
