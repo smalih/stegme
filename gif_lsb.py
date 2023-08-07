@@ -114,41 +114,56 @@ def encode(src, message, dest=None):
     else:
         buffer = set_comment(src, message, dest)
 
-def decode(src):
-    with open(src, 'rb') as fp:
-        def read_comment_data():
-            comment = b''
-            while True:
-                s = fp.read(1)
-                if s == _binary.o8(0): # if terminator
-                    return comment 
-                comment += fp.read(s[0])
+def decode(fp):
 
-        s = fp.read(13) # read gif file header
-        if s[:6] not in [b'GIF87a', b'GIF89a']:
-            raise SyntaxError("File provided is not a gif file")
-        packed = s[10]
-
-        if packed & 128:
-            num_gct_entries = (packed & 7) + 1
-            fp.read(3 << num_gct_entries)
-
-        after = None
-        before = fp.tell()
-        s = fp.read(1)
-        if s == b'!':
+    def read_comment_data():
+        comment = b''
+        while True:
             s = fp.read(1)
-            if s[0] == 254:
-                comment = read_comment_data()
-                # print(comment)
-                comment = comment.decode()
-                print(comment)
-                return comment
-        else:
-            raise SyntaxError("GIF File passed contains no hidden message")
-                
-message = input("Enter message: ")
-tp = open('giphy.gif', 'rb')
-tp.close
-encode(tp, message, 'giphy_out.gif')
-decode('giphy_out.gif')
+            if s == _binary.o8(0): # if terminator
+                return comment 
+            comment += fp.read(s[0])
+
+    exclusive_fp = False
+    filename = ''
+    if isinstance(fp, Path):
+        filename = str(fp.resolve())
+    elif is_path(fp):
+        filename = fp
+
+    if filename:
+        fp = open(filename, 'rb')
+        exclusive_fp = True # exclusive_fp means path was passed
+    try:
+        fp.seek(0)
+    except (AttributeError, io.UnsupportedOperation):
+        fp = io.BytesIO(fp.read())
+        exclusive_fp = True
+
+    s = fp.read(13) # read gif file header
+    if s[:6] not in [b'GIF87a', b'GIF89a']:
+        raise SyntaxError("File provided is not a gif file")
+    packed = s[10]
+
+    if packed & 128:
+        num_gct_entries = (packed & 7) + 1
+        fp.read(3 << num_gct_entries)
+
+    s = fp.read(1)
+    if s == b'!':
+        s = fp.read(1)
+        if s[0] == 254:
+            comment = read_comment_data()
+            comment = comment.decode()
+            print(comment)
+            return comment
+             
+# message = input("Enter message: ")
+# tp = open('giphy.gif', 'rb')
+# # tp.close()
+# encode(tp, message, 'giphy_out.gif')
+# xp = open('giphy_out.gif', 'rb')
+# # xp.close()
+# decode(xp)
+# tp.close()
+# xp.close()
