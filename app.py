@@ -9,7 +9,8 @@ import random
 import bcrypt
 
 # from steg import Encode, Decode
-from steg_lsb import encode, decode
+import steg_lsb 
+import gif_lsb
 
 from db_schema import db, User
 
@@ -53,6 +54,15 @@ category = 'nature'
 categories='nature, city, technology, food, still_life, abstract, wildlife'.split(", ")
 
 
+
+import magic
+
+
+def get_mimetype(data: bytes) -> str:
+    """Get the mimetype from file data."""
+    f = magic.Magic(mime=True)
+    return f.from_buffer(data)
+
 def get_random_image_from_api():
     api_url = f'https://api.api-ninjas.com/v1/randomimage?category={random.choice(categories)}'
     response = requests.get(api_url, headers={'X-Api-Key': 'vUkWtBsXjrU12mz7Ep8YdQ==TYN8vUz4sZ34Rfe2', 'Accept': 'image/png'}, stream=True)
@@ -68,32 +78,49 @@ def upload():
         if True:
             message = request.form['message']
             operation = request.form['operation']
-            image = request.files.get('image')
+            file = request.files.get('file')
 
-            print("image type:", type(image))
+           
  
             if operation == 'Encode':
                 if not(message):
                     flash("Message field cannot be left blank")
                     return redirect(url_for('upload'))
-                if not(image) :
-                    print("No image supplied, getting random one from API")
-                    image = get_random_image_from_api()
+                if not(file) :
+                    print("No file supplied, getting random jpeg from API")
+                    file = get_random_image_from_api()
             
-                # form.image.data.save(app.config['UPLOAD_FOLDER'] + filename)
-                filename = time.strftime("%d_%m_%Y-%H_%M_%S") + ".png"
-                enc_image = encode(image, message, app.config['ENCODE_FOLDER'] + filename)
-                # enc_image2 = encode(image, message)
+                # form.file.data.save(app.config['UPLOAD_FOLDER'] + filename)
+                print("file type: ", type(file))
+                file_type = get_mimetype(file.stream.read())
+                if file_type == 'image/gif':
+                    file_extension = 'gif'
+                elif file_type == 'image/png':
+                    file_extension = 'png'
+                elif file_type == 'image/jpeg':
+                    file_extension = 'jpg'
+                else:
+                    print(file_type)
+                    raise Exception("File type not supported")
+                filename = time.strftime("%d_%m_%Y-%H_%M_%S") + f".{file_extension}"
+                if file_type == 'image/gif':
+                    enc_file = gif_lsb.encode(file, message, app.config['ENCODE_FOLDER'] + filename)
+                else:
+                    enc_file = steg_lsb.encode(file, message, app.config['ENCODE_FOLDER'] + filename)
+                # enc_file2 = encode(file, message)
 
-                # return send_file(enc_image, as_attachment=True, download_name=filename)
+                # return send_file(enc_file, as_attachment=True, download_name=filename)
                 flash('Message successfully encoded', 'success')
                 print("encoded")
-                # session['encoded_file'] = enc_image2
+                # session['encoded_file'] = enc_file2
                 # session['encoded_filename'] = filename
-                print("after storing in session var")
                 return render_template('encoded.html', filename=filename)
             elif operation == 'Decode':
-                hidden_message = decode(image)
+                file_type = get_mimetype(file.stream.read())
+                if file_type == 'image/gif':
+                    hidden_message = gif_lsb.decode(file)
+                else:
+                    hidden_message = steg_lsb.decode(file)
                 print("decode output: ", hidden_message)
                 session['hidden_message'] = hidden_message
                 return redirect(url_for('decoded'))
