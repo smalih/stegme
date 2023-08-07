@@ -4,7 +4,7 @@ import numpy as np
 from io import BytesIO
 
 
-terminating_string = "$end$"
+
 
 
 def encode(src, message, dest=None):
