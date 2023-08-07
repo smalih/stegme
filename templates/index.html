@@ -6,7 +6,7 @@
     <form method="post" enctype="multipart/form-data">
         <!-- {{ form.hidden_tag() }} -->
         {{ form.message.label }}
-        {{ form.message }}
+        {{ form.message(autocomplete="new-password") }}
         {{ form.operation }}
       
         <input id="image" name="image" type="file" multiple accept="image/png, image/jpeg">

@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+<!-- {% set active_page = "users" %} -->
+{% block title %} Message Encoded {% endblock %}
+{% block content %}
+<h1>Message Encoded</h1>
+<form action="/download/{{ filename }}" method="POST">
+    <button name="download_btn" type="submit">Download</button>
+</form>
+{% endblock %}
