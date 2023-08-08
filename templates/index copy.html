@@ -1,0 +1,17 @@
+
+{% extends "layout.html" %} {% set active_page = "" %} 
+{% block title%}LSB Image Steganography{% endblock %} 
+{% block content %}
+    <h1>LSB Image Steganography</h1>
+    <form method="post" enctype="multipart/form-data">
+        <!-- {{ form.hidden_tag() }} -->
+        {{ form.message.label }}
+        {{ form.message(autocomplete="new-password") }}
+        {{ form.operation }}
+      
+        <input id="file" name="file" type="file" multiple accept="image/png, image/jpeg, image/gif">
+        <br>
+        
+        {{ form.submit }}
+    </form>
+{% endblock %}

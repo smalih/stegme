@@ -1,0 +1,51 @@
+{% extends "layout.html" %} {% set active_page = "" %} 
+{% block title%}Register{% endblock %} 
+{% block content %}
+<h1>Register</h1>
+<div class="form-container">
+    <form method="post" action="{{ url_for('register') }}">
+    {{ form.hidden_tag() }} {% for message in form.fname.errors %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+    <div class="form-group">
+        {{ form.fname.label }} {{ form.fname(class="form-control",
+        placeholder="John") }}
+    </div>
+
+    {% for message in form.surname.errors %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+    <div class="form-group">
+        {{ form.surname.label }} {{ form.surname(class="form-control",
+        placeholder="Smith") }}
+    </div>
+
+    {% for message in form.email.errors %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+    <div class="form-group">
+        {{ form.email.label }} {{ form.email(class="form-control",
+        placeholder="hide@stegme.com") }}
+    </div>
+
+    {% for message in form.password.errors %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+    <div class="form-group">
+        {{ form.password.label }} {{ form.password(class="form-control")}}
+    </div>
+
+    {% for message in form.confirm.errors %}
+    <div class="flash">{{ message }}</div>
+    {% endfor %}
+    <div class="form-group">
+        {{ form.confirm.label }} {{ form.confirm(class="form-control") }}
+    </div>
+
+    {{ form.submit(class="user-button") }}
+    </form>
+    Already have an account? Click <a href="{{ url_for('login') }}">here</a> to sign in!
+</div>
+<p>
+  
+{% endblock %}

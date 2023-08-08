@@ -2,16 +2,81 @@
 {% extends "layout.html" %} {% set active_page = "" %} 
 {% block title%}LSB Image Steganography{% endblock %} 
 {% block content %}
-    <h1>LSB Image Steganography</h1>
-    <form method="post" enctype="multipart/form-data">
-        <!-- {{ form.hidden_tag() }} -->
-        {{ form.message.label }}
-        {{ form.message(autocomplete="new-password") }}
-        {{ form.operation }}
-      
-        <input id="file" name="file" type="file" multiple accept="image/png, image/jpeg, image/gif">
-        <br>
-        
-        {{ form.submit }}
-    </form>
+    <section class="bg-dark" style="--bs-dark: #2d2c38;--bs-dark-rgb: 45,44,56;padding-bottom: 66px;">
+    <div class="container pt-4 pt-xl-5">
+        <div class="row pt-5">
+            <div class="col-md-8 col-xl-6 text-center text-md-start mx-auto" style="width: 55em;">
+                <div class="text-center">
+                    <p class="fw-bold text-success mb-2" style="color: rgb(33,191,137);">Now working with GIFs!</p>
+                    <h1 class="fw-bold" style="padding-bottom: 15px;">Hide messages within media!</h1>
+                </div>
+                <div>
+                    <ul class="nav nav-tabs nav-fill" role="tablist">
+                        <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#tab-1" style="color: #fff;">Encode</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#tab-2" style="color: #fff;border-top-color: rgb(33,191,137);border-right-color: rgb(33,191,137);border-left-color: rgb(33,191,137);">Decode</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane" role="tabpanel" id="tab-1">
+                            <section class="position-relative py-4 py-xl-5" style="background: #27262e;border-bottom-left-radius: 16px;border-bottom-right-radius: 16px;">
+                                <div class="container">
+                                    <div class="row mb-5">
+                                        <div class="col-md-8 col-xl-6 text-center mx-auto">
+                                            <h2>Encode Your Messages</h2>
+                                            <p class="w-lg-50">Hide a secret message within a png, jpeg or <strong>gif</strong> file</p>
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex justify-content-center">
+                                        <div class="col-md-6 col-xl-4" style="width: 30em;">
+                                            <div class="card mb-5">
+                                                <div class="card-body d-flex flex-column align-items-center" style="width: 100%;min-width: 300px;max-width: 100%;">
+                                                    <form class="text-center" method="post" style="width: 100%;">
+                                                        <div class="mb-3"><input class="form-control" type="text" name="email" placeholder="Email" style="background: transparent;"></div>
+                                                        <div class="mb-3"><input class="form-control" type="file" name="password" placeholder="Password"></div>
+                                                        <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit" style="background: rgb(33,191,137);">Encode</button></div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="tab-pane active" role="tabpanel" id="tab-2">
+                            <section class="position-relative py-4 py-xl-5" style="background: #27262e;border-bottom-left-radius: 16px;border-bottom-right-radius: 16px;">
+                                <div class="container">
+                                    <div class="row mb-5">
+                                        <div class="col-md-8 col-xl-6 text-center mx-auto">
+                                            <h2>Decode Your Files</h2>
+                                            <p class="w-lg-50">Find a secret message hidden within a png, jpeg or <strong>gif</strong> file</p>
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex justify-content-center">
+                                        <div class="col-md-6 col-xl-4" style="width: 30em;">
+                                            <div class="card mb-5">
+                                                <div class="card-body d-flex flex-column align-items-center" style="width: 100%;min-width: 300px;max-width: 100%;">
+                                                    <form class="text-center" method="post" style="width: 100%;">
+                                                        <div class="mb-3"></div>
+                                                        <div class="mb-3"><input class="form-control" type="file" name="password" placeholder="Password"></div>
+                                                        <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit" style="background: rgb(33,191,137);">Decode</button></div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-10 mx-auto">
+                <div class="position-relative" style="display: flex;flex-wrap: wrap;justify-content: flex-end;">
+                    <div style="position: relative;flex: 0 0 45%;transform: translate3d(-15%, 35%, 0);"></div>
+                    <div style="position: relative;flex: 0 0 45%;transform: translate3d(-5%, 20%, 0);"></div>
+                    <div style="position: relative;flex: 0 0 60%;transform: translate3d(0, 0%, 0);"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
