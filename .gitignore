@@ -7,3 +7,6 @@ __pycache__
 .DS_Store
 client
 test_folder
+instance
+Dockerfile
+env_vars
