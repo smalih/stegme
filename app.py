@@ -65,12 +65,23 @@ def get_mimetype(data: bytes) -> str:
     f = magic.Magic(mime=True)
     return f.from_buffer(data)
 
+def get_accepted_mimetypes():
+    return_str = ""
+    for mimetype in app.config.get('ACCEPTED_MIMETYPES_EXTENSIONS').keys():
+        return_str+=mimetype
+        return_str+=", "
+    if return_str:
+        return_str = return_str[:-2]
+    return return_str
+
 def get_random_image_from_api():
     api_url = f'https://api.api-ninjas.com/v1/randomimage?category={random.choice(categories)}'
     response = requests.get(api_url, headers={'X-Api-Key': 'vUkWtBsXjrU12mz7Ep8YdQ==TYN8vUz4sZ34Rfe2', 'Accept': 'image/png'}, stream=True)
     if response.status_code == requests.codes.ok:
         return response.raw
     raise ValueError("Error - status code NOT OK")
+
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -125,7 +136,7 @@ def index():
                 return redirect(url_for('decoded'))
 
             return redirect(url_for('index'))
-    return render_template('index.html', form=form, accepted_mimetypes=app.config['ACCEPTED_MIMETYPES_EXTENSIONS'].keys())
+    return render_template('index.html', form=form, accepted_mimetypes=get_accepted_mimetypes())
 
 
 

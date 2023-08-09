@@ -45,3 +45,11 @@ html {
     max-width: 100%;
     min-width: 100%;
 }
+
+.btn {
+    --bs-btn-border-color: rgb(33,191,137);
+}
+
+.btn:hover {
+    border-color: rgb(33,191,137);
+}
