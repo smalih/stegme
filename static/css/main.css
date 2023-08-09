@@ -11,3 +11,16 @@
     border-right-color: rgb(33,191,137) !important;
     border-left-color: rgb(33,191,137) !important;
 } 
+
+.btn {
+    background: rgb(33,191,137);
+}
+
+html {
+    --bs-body-bg: #27262e !important;
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+}

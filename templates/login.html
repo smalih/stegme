@@ -28,7 +28,7 @@
                             {% endfor %}
                             <div class="mb-3">{{ form.email(class="form-control", placeholder="hide@stegme.com", style="background: transparent;") }}</div>
                             <div class="mb-3">{{ form.password(class="form-control", placeholder="Password", style="background: transparent;") }}</div>
-                            <div class="mb-3">{{ form.submit(class="user-button btn d-block w-100", style="background: rgb(33,191,137);") }}</div>
+                            <div class="mb-3">{{ form.submit(class="user-button btn d-block w-100") }}</div>
                             <p class="text-muted">Don't have an account?&nbsp;<a href="{{ url_for('register') }}">Sign up</a></p>
                         </form>
                     </div>
