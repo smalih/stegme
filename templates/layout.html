@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/Login-Form-Basic-icons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <script src="{{ url_for('static', filename='js/jquery-3.6.3.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     
@@ -19,7 +20,7 @@
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link active" href="{{ url_for('index') }}">Home</a></li>
-                </ul><a class="btn btn-primary shadow" role="button" href="{{ url_for('login') }}" style="background: rgb(33,191,137);">Log In</a>
+                </ul><a class="btn" role="button" href="{{ url_for('login') }}" style="background: rgb(33,191,137);">Log In</a>
             </div>
         </div>
     </nav>

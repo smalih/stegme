@@ -12,8 +12,8 @@
                 </div>
                 <div>
                     <ul class="nav nav-tabs nav-fill" role="tablist">
-                        <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#tab-1" style="color: #fff;">Encode</a></li>
-                        <li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#tab-2" style="color: #fff;border-top-color: rgb(33,191,137);border-right-color: rgb(33,191,137);border-left-color: rgb(33,191,137);">Decode</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link active operation-tab" role="tab" data-bs-toggle="tab" href="#tab-1">Encode</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link operation-tab" role="tab" data-bs-toggle="tab" href="#tab-2">Decode</a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active show" role="tabpanel" id="tab-1">
@@ -32,7 +32,7 @@
                                                     <form class="text-center" method="post" enctype="multipart/form-data" action="{{ url_for('index', operation='encode') }}" style="width: 100%;">
                                                         <div class="mb-3">{{ form.message(class="form-control", placeholder="Message", style="background: transparent;") }}</div>
                                                         <div class="mb-3"><input class="form-control" type="file" name="file" multiple accept="{{ accepted_mimetypes }}"></div>
-                                                        <div class="mb-3">{{ form.submit(class="user-button btn btn-primary shadow d-block w-100", style="background: rgb(33,191,137);") }}</div>
+                                                        <div class="mb-3">{{ form.submit(class="user-button btn d-block w-100", style="background: rgb(33,191,137);") }}</div>
                                                     </form>
                                                 </div>
                                             </div>
@@ -56,7 +56,7 @@
                                                 <div class="card-body d-flex flex-column align-items-center" style="width: 100%;min-width: 300px;max-width: 100%;">
                                                     <form class="text-center" method="post" enctype="multipart/form-data" action="{{ url_for('index', operation='decode') }}" style="width: 100%;">
                                                         <div class="mb-3"><input class="form-control" type="file" name="file" multiple accept="{{ accepted_mimetypes }}"></div>
-                                                        <div class="mb-3">{{ form.submit(class="user-button btn btn-primary shadow d-block w-100", style="background: rgb(33,191,137);") }}</div>
+                                                        <div class="mb-3">{{ form.submit(class="user-button btn shadow d-block w-100", style="background: rgb(33,191,137);") }}</div>
                                                     </form>
                                                 </div>
                                             </div>
