@@ -8,7 +8,6 @@ from werkzeug.utils import secure_filename
 
 class UploadForm(FlaskForm):
     message = StringField("Message")
-    operation = RadioField("Operation", choices=['Encode', 'Decode'])
     # image = FileField("image", validators=[
     #     FileAllowed(['png'], "PNG images only!")
     # ])

@@ -73,21 +73,24 @@ def get_random_image_from_api():
     raise ValueError("Error - status code NOT OK")
 
 @app.route('/', methods=['GET', 'POST'])
-def upload():
+def index():
     form = UploadForm()
     if request.method == 'POST':
         # if form.validate_on_submit():
         if True:
-            message = request.form['message']
-            operation = request.form['operation']
+            
             file = request.files.get('file')
 
-           
+            operation = request.args.get('operation')
+            print(operation)
+            print("just printed operation")
+        
  
-            if operation == 'Encode':
+            if operation == 'encode':
+                message = request.form.get('message')
                 if not(message):
                     flash("Message field cannot be left blank")
-                    return redirect(url_for('upload'))
+                    return redirect(url_for('index'))
                 if not(file) :
                     print("No file supplied, getting random jpeg from API")
                     file = get_random_image_from_api()
@@ -95,7 +98,7 @@ def upload():
                     print("API file: ", file)
                     file_type = 'image/jpeg'
 
-    
+
                 else:
                     print("file type: ", type(file))
                     file_type = get_mimetype(file.stream.read())
@@ -113,7 +116,7 @@ def upload():
                 # session['encoded_file'] = enc_file2
                 # session['encoded_filename'] = filename
                 return render_template('encoded.html', filename=filename)
-            elif operation == 'Decode':
+            elif operation == 'decode':
                 file_type = get_mimetype(file.stream.read())
                 hidden_message = decode(file, file_type)
                
@@ -121,8 +124,8 @@ def upload():
                 session['hidden_message'] = hidden_message
                 return redirect(url_for('decoded'))
 
-            return redirect(url_for('upload'))
-    return render_template('index.html', form=form)
+            return redirect(url_for('index'))
+    return render_template('index.html', form=form, accepted_mimetypes=app.config['ACCEPTED_MIMETYPES_EXTENSIONS'].keys())
 
 
 
@@ -153,9 +156,9 @@ def download(name):
     # return render_template('encoded.html', file=session['encoded_file'], name=name)
 
 
-@app.route('/index')
-def index():
-    return redirect(url_for('upload'))
+# @app.route('/index')
+# def index():
+#     return redirect(url_for('index'))
 
 # user registration
 @app.route('/register', methods=['GET', 'POST'])
@@ -185,7 +188,7 @@ def register():
                 login_user(new_user)
                 new_user = User.query.filter_by(email=email).first() # is this line needed?
                 flash('You have successfully registered', 'success')
-                return redirect(url_for('upload'))
+                return redirect(url_for('index'))
         else:
             flash('Register form not valid', category='error')
     return render_template('register.html', form=form)
@@ -196,7 +199,7 @@ def register():
 def login():
     if current_user.is_authenticated:
         flash('You are already logged in. Please log out to log in with a different account', 'warning')
-        return redirect(url_for('upload'))
+        return redirect(url_for('index'))
     form = LoginForm()
     if request.method == 'POST':
         if form.validate():
