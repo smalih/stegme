@@ -1,22 +1,22 @@
 {% extends "layout.html" %} {% set active_page = "" %} 
 {% block title%}Register{% endblock %} 
 {% block content %}
-<section class="py-5" style="background: #2d2c38;">
+<section class="py-5 content-section">
     <div class="container py-5">
-        <div class="row mb-4 mb-lg-5" style="--bs-dark: #2d2c38;--bs-dark-rgb: 45,44,56;">
+        <div class="row mb-4 mb-lg-5">
             <div class="col-md-8 col-xl-6 text-center mx-auto">
                 <p class="fw-bold text-success mb-2">Sign up</p>
                 <h2 class="fw-bold">Welcome</h2>
             </div>
         </div>
         <div class="row d-flex justify-content-center">
-            <div class="col-md-6 col-xl-4" style="height: 604.281px;border-radius: 16px;">
+            <div class="col-md-6 col-xl-4">
                 <div class="card">
-                    <div class="card-body text-center d-flex flex-column align-items-center" style="width: 100%;min-width: 300px;max-width: 100%;background: #27262e;border-radius: 16px;">
-                        <div class="bs-icon-xl bs-icon-circle bs-icon-primary shadow bs-icon my-4" style="--bs-primary: rgb(33,191,137);--bs-primary-rgb: 33,191,137;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-person">
+                    <div class="card-body text-center d-flex flex-column align-items-center w-100 mw-100">
+                        <div class="profile-icon bs-icon-xl bs-icon-circle bs-icon-primary bs-icon my-4"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-person">
                                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"></path>
                             </svg></div>
-                        <form method="post" style="width: 100%;max-width: 100%;min-width: 100%;">
+                        <form method="post" class="user-form">
                             {{ form.hidden_tag() }}
                             {% for message in form.email.errors %}
                                 <div class="flash">{{ message }}</div>
@@ -24,11 +24,11 @@
                             {% for message in form.password.errors %}
                                 <div class="flash">{{ message }}</div>
                             {% endfor %}
-                            <div class="mb-3">{{ form.fname(class="form-control", placeholder="John", style="background: transparent;") }}</div>
-                            <div class="mb-3">{{ form.surname(class="form-control", placeholder="Smith", style="background: transparent;") }}</div>
-                            <div class="mb-3">{{ form.email(class="form-control", placeholder="hide@stegme.com", style="background: transparent;") }}</div>
-                            <div class="mb-3">{{ form.password(class="form-control", placeholder="Password", style="background: transparent;") }}</div>
-                            <div class="mb-3">{{ form.confirm(class="form-control", placeholder="Confirm Password", style="background: transparent;") }}</div>
+                            <div class="mb-3">{{ form.fname(class="form-control bg-transparent", placeholder="John") }}</div>
+                            <div class="mb-3">{{ form.surname(class="form-control bg-transparent", placeholder="Smith") }}</div>
+                            <div class="mb-3">{{ form.email(class="form-control bg-transparent", placeholder="hide@stegme.com") }}</div>
+                            <div class="mb-3">{{ form.password(class="form-control bg-transparent", placeholder="Password") }}</div>
+                            <div class="mb-3">{{ form.confirm(class="form-control bg-transparent", placeholder="Confirm Password") }}</div>
                             <div class="mb-3">{{ form.submit(class="user-button btn d-block w-100") }}</div>
                             <p class="text-muted">Already have an account?&nbsp;<a href="{{ url_for('login') }}">Log in</a></p>
                         </form>

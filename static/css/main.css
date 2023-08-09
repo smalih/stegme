@@ -24,3 +24,24 @@ html {
     width: 60px;
     height: 60px;
 }
+
+.content-section {
+    background: #2d2c38;
+}
+
+.card-body {
+    background: #27262e;
+    border-radius: 16px;
+    min-width: 300px;
+}
+
+.profile-icon {
+    --bs-primary: rgb(33,191,137);
+    --bs-primary-rgb: 33,191,137;
+}
+
+.user-form {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+}
