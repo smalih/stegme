@@ -24,11 +24,11 @@
                             {% for message in form.password.errors %}
                                 <div class="flash">{{ message }}</div>
                             {% endfor %}
-                            <div class="mb-3">{{ form.fname(class="form-control bg-transparent", placeholder="John") }}</div>
-                            <div class="mb-3">{{ form.surname(class="form-control bg-transparent", placeholder="Smith") }}</div>
-                            <div class="mb-3">{{ form.email(class="form-control bg-transparent", placeholder="hide@stegme.com") }}</div>
-                            <div class="mb-3">{{ form.password(class="form-control bg-transparent", placeholder="Password") }}</div>
-                            <div class="mb-3">{{ form.confirm(class="form-control bg-transparent", placeholder="Confirm Password") }}</div>
+                            <div class="mb-3">{{ form.fname(class="form-control bg-transparent input-box", placeholder="John") }}</div>
+                            <div class="mb-3">{{ form.surname(class="form-control bg-transparent input-box", placeholder="Smith") }}</div>
+                            <div class="mb-3">{{ form.email(class="form-control bg-transparent input-box", placeholder="hide@stegme.com") }}</div>
+                            <div class="mb-3">{{ form.password(class="form-control bg-transparent input-box", placeholder="Password") }}</div>
+                            <div class="mb-3">{{ form.confirm(class="form-control bg-transparent input-box", placeholder="Confirm Password") }}</div>
                             <div class="mb-3">{{ form.submit(class="user-button btn d-block w-100") }}</div>
                             <p class="text-muted">Already have an account?&nbsp;<a href="{{ url_for('login') }}">Log in</a></p>
                         </form>

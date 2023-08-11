@@ -53,3 +53,11 @@ html {
 .btn:hover {
     border-color: rgb(33,191,137);
 }
+
+.input-box {
+    color: #fff;
+}
+
+.input-box:focus {
+    color: #fff;
+}
