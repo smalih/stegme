@@ -148,8 +148,9 @@ def decoded():
 @app.route('/genfile', methods=['GET'])
 def gen_file():
 
-    category = 'nature'
+    
     categories='nature, city, technology, food, still_life, abstract, wildlife'.split(", ")
+
     api_url = 'https://api.api-ninjas.com/v1/randomimage?category={}'.format(category)
     response = requests.get(api_url, headers={'X-Api-Key': 'vUkWtBsXjrU12mz7Ep8YdQ==TYN8vUz4sZ34Rfe2', 'Accept': 'image/jpg'}, stream=True)
     if response.status_code == requests.codes.ok:
@@ -159,12 +160,12 @@ def gen_file():
         print("Error:", response.status_code, response.text)
     return redirect(url_for('upload_file'))
 
-@app.route('/download/<name>', methods=["POST"])
-def download(name):
-    print("in download")
-    # return send_from_directory(app.config['ENCODE_FOLDER'], name, as_attachment=True)
-    return send_file(app.config['ENCODE_FOLDER']+ name, as_attachment=True)
-    # return render_template('encoded.html', file=session['encoded_file'], name=name)
+# @app.route('/download/<name>', methods=["POST"])
+# def download(name):
+#     print("in download")
+#     # return send_from_directory(app.config['ENCODE_FOLDER'], name, as_attachment=True)
+#     return send_file(app.config['ENCODE_FOLDER']+ name, as_attachment=True)
+#     # return render_template('encoded.html', file=session['encoded_file'], name=name)
 
 
 # @app.route('/index')

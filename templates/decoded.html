@@ -2,7 +2,9 @@
 <!-- {% set active_page = "users" %} -->
 {% block title %} Message Decoded {% endblock %}
 {% block content %}
-<h1>Message Decoded</h1>
-<p id="one">{{ hidden_message }}</p>
-<btn class="btn" id="two">Show</btn>
+<div class="col-md-8 col-xl-6 mx-auto pt-4">
+    <h1>Message Decoded</h1>
+    <p id="hidden-message">{{ hidden_message }}</p>
+    <btn class="btn" id="show-btn">Show</btn>
+</div>
 {% endblock %}

@@ -61,3 +61,27 @@ html {
 .input-box:focus {
     color: #fff;
 }
+
+.close {
+    color: #21bf89;
+    background-color: transparent;
+    /* border: 1px solid #21bf89; */
+    border: none;
+    border-radius: 0px;
+    font-size: 1.6em;
+    padding: 5px 20px;
+    padding-top: 5px;
+    padding-right: 8px;
+    padding-bottom: 10px;
+    padding-left: 8px;
+    /* --bs-btn-font-family: ;
+    --bs-btn-font-size: 1rem;
+    --bs-btn-font-weight: 700;
+    --bs-btn-line-height: 1.6; */
+}
+
+.decoded-main {
+    margin-left: auto;
+    padding-top: 10px;
+    padding-left: 40px;
+}

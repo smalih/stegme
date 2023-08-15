@@ -17,13 +17,13 @@ class RegisterForm(FlaskForm):
     fname = StringField("Firstname", [validators.InputRequired()])
     surname = StringField("Surname", [validators.InputRequired()])
     email = EmailField("Email", [validators.InputRequired("Please enter your email address"), Email()])
-    password = PasswordField(validators=[validators.Length(min=8, message='Too short')])
+    password = PasswordField(validators=[validators.Length(min=8, message='Password must be at least 8 characters in length')])
     confirm = PasswordField(validators=[validators.EqualTo('password', 'Password mismatch')])
     submit = SubmitField("Register")
 
 class LoginForm(FlaskForm):
     email = EmailField("Email", [validators.InputRequired("Please enter your email address")])
-    password = PasswordField(validators=[validators.Length(min=8, message='Too short')])
+    password = PasswordField(validators=[validators.Length(min=8, message='Password must be at least 8 characters in length')])
     remember_me = BooleanField('Remember me')
     submit = SubmitField("Log in")
 

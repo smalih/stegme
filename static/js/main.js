@@ -42,19 +42,19 @@ $(function () {
 
 $(document).ready(function(){
     var visible = false;
-    var value = $("#one").text();
+    var value = $("#hidden-message").text();
 
 
-    $("#one").text('*'.repeat(value.length));
+    $("#hidden-message").text('*'.repeat(value.length));
 
-    $('#two').click(function() {
+    $('#show-btn').click(function() {
         if(visible){
-            // value = $("#one").text();
-            $("#one").text('*'.repeat(value.length));
-            $("#two").text("Show")
+            // value = $("#hidden-message").text();
+            $("#hidden-message").text('*'.repeat(value.length));
+            $("#show-btn").text("Show")
         }else{
-            $("#one").text(value);
-            $("#two").text("Hide")
+            $("#hidden-message").text(value);
+            $("#show-btn").text("Hide")
         }
 
         visible = !visible;
