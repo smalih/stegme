@@ -5,7 +5,10 @@
 <div class="col-md-8 col-xl-6 mx-auto pt-4">
 <h1>Message Encoded</h1>
 <form action="/download/{{ filename }}" method="POST">
-    <button name="download_btn" class="btn" type="submit">Download</button>
+    <div>
+    <img src="{{ filepath }}">
+    </div>
+    <button name="download_btn" class="btn download-btn" type="submit">Download</button>
 </form>
 </div>
 {% endblock %}

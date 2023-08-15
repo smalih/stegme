@@ -17,8 +17,8 @@ from db_schema import db, User
 
 
 UPLOAD_FOLDER = './uploads/'
-ENCODE_FOLDER = './encoded/'
-DECODE_FOLDER = './decode/'
+ENCODE_FOLDER = './static/encoded/'
+DECODE_FOLDER = './static/decode/'
 HIDDEN_FOLDER = './hidden/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
@@ -59,6 +59,8 @@ categories='nature, city, technology, food, still_life, abstract, wildlife'.spli
 
 import magic
 
+def get_file_path(filename):
+    return os.path.join(app.config['ENCODE_FOLDER'], filename)
 
 def get_mimetype(data: bytes) -> str:
     """Get the mimetype from file data."""
@@ -126,7 +128,7 @@ def index():
                 print("encoded")
                 # session['encoded_file'] = enc_file2
                 # session['encoded_filename'] = filename
-                return render_template('encoded.html', filename=filename)
+                return render_template('encoded.html', filepath=get_file_path(filename))
             elif operation == 'decode':
                 file_type = get_mimetype(file.stream.read())
                 hidden_message = decode(file, file_type)
@@ -160,12 +162,12 @@ def decoded():
 #         print("Error:", response.status_code, response.text)
 #     return redirect(url_for('upload_file'))
 
-# @app.route('/download/<name>', methods=["POST"])
-# def download(name):
-#     print("in download")
-#     # return send_from_directory(app.config['ENCODE_FOLDER'], name, as_attachment=True)
-#     return send_file(app.config['ENCODE_FOLDER']+ name, as_attachment=True)
-#     # return render_template('encoded.html', file=session['encoded_file'], name=name)
+@app.route('/download/<name>', methods=["POST"])
+def download(name):
+    print("in download")
+    # return send_from_directory(app.config['ENCODE_FOLDER'], name, as_attachment=True)
+    return send_file(app.config['ENCODE_FOLDER']+ name, as_attachment=True)
+    # return render_template('encoded.html', file=session['encoded_file'], name=name)
 
 
 # @app.route('/index')
