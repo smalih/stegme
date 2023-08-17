@@ -6,3 +6,4 @@ test_folder
 instance
 Dockerfile
 env_vars
+static/encoded/

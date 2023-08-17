@@ -6,9 +6,6 @@ from wtforms.validators import Email
 
 class UploadForm(FlaskForm):
     message = StringField("Message")
-    # image = FileField("image", validators=[
-    #     FileAllowed(['png'], "PNG images only!")
-    # ])
     submit = SubmitField()
 
 class RegisterForm(FlaskForm):
