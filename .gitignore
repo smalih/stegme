@@ -1,9 +1,5 @@
 venv
 __pycache__
-*.png
-*.jpg
-*.jpeg
-*.gif
 .DS_Store
 client
 test_folder
