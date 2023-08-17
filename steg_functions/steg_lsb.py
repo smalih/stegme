@@ -1,7 +1,6 @@
 from PIL import Image
 from math import ceil
 import numpy as np
-from io import BytesIO
 
 
 

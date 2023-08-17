@@ -1,5 +1,4 @@
 import requests
-import shutil
 from PIL import Image
 
 
