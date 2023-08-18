@@ -1,6 +1,6 @@
 import unittest, sys
 
-sys.path.append('../stegme')
+sys.path.append('..')
 
 from app import app
 
