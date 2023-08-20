@@ -127,7 +127,7 @@ def index():
                 print("encoded")
                 # session['encoded_file'] = enc_file2
                 # session['encoded_filename'] = filename
-                return render_template('encoded.html', filepath=get_file_path(filename))
+                return render_template('encoded.html', filename=filename, filepath=get_file_path(filename))
             elif operation == 'decode':
                 file_type = get_mimetype(file.stream.read())
                 hidden_message = decode(file, file_type)

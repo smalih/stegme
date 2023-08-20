@@ -54,6 +54,7 @@ def encode(src, message, dest=None):
     if dest:
         enc_img.save(dest, format="PNG")
     else:
+        print("type", type(enc_img))
         return enc_img
 
 def decode(src):

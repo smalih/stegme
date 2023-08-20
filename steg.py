@@ -9,7 +9,7 @@ import numpy as np
 terminating_string = "$end$"
 
 def set_comment(fp, comment, out_path=None):
-    
+
     exclusive_fp = False
     filename = ''
     if isinstance(fp, Path):
@@ -77,11 +77,12 @@ def set_comment(fp, comment, out_path=None):
     before_bytes = fp.read(before)
     fp.seek(after)
     after_bytes = fp.read()
+    fp.close()
     if out_path:
         fp = open(out_path, 'wb')
-    # else:
-    #     fp = io.BufferedWriter(io.BytesIO())
-
+    else:
+        fp = io.BufferedWriter(io.BytesIO())
+        print(type(fp))
     fp.write(before_bytes) # write all bytes before comment block
 
     # write comment block
@@ -105,6 +106,9 @@ def set_comment(fp, comment, out_path=None):
         fp.write(_binary.o8(0)) # write block terminator
     fp.write(after_bytes) # write remaining bytes
     fp.close()
+    if out_path is None:
+        print("gif return", fp)
+        return fp
 
 
 def decode_gif(fp):
@@ -235,7 +239,7 @@ def decode_img(src):
     hidden_message = ""      
     for i in range(0, len(hidden_b_message) - len(terminating_binary), 8):
         hidden_message += chr(int(hidden_b_message[i:i+8], 2))
-    print(hidden_message)
+    print("hidden message", hidden_message)
     return hidden_message
 
 
@@ -244,9 +248,9 @@ def decode_img(src):
 
 def encode(fp, file_type, message, dest=None):
     if file_type == 'image/gif':
-         set_comment(fp, message, dest)
+         return set_comment(fp, message, dest)
     elif file_type in ['image/png', 'image/jpeg']:
-        encode_img(fp, message, dest)
+        return encode_img(fp, message, dest)
     else:
         raise Exception(f'File type {file_type} not supported')
 
