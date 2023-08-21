@@ -15,10 +15,10 @@ from steg import encode, decode
 from db_schema import db, User
 
 
-UPLOAD_FOLDER = './uploads/'
-ENCODE_FOLDER = './static/encoded/'
-DECODE_FOLDER = './static/decode/'
-HIDDEN_FOLDER = './hidden/'
+UPLOAD_FOLDER = os.path.abspath('./uploads/')
+ENCODE_FOLDER = os.path.abspath('./static/encoded/')
+DECODE_FOLDER = os.path.abspath('./static/decode/')
+HIDDEN_FOLDER = os.path.abspath('./hidden/')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app = Flask(__name__)
@@ -59,7 +59,8 @@ categories='nature, city, technology, food, still_life, abstract, wildlife'.spli
 import magic
 
 def get_file_path(filename):
-    return os.path.join(app.config['ENCODE_FOLDER'], filename)
+    path = os.path.join(app.config['ENCODE_FOLDER'], filename)
+    return os.path.relpath(path)
 
 def get_mimetype(data: bytes) -> str:
     """Get the mimetype from file data."""
@@ -120,7 +121,7 @@ def index():
                     print(file_type)
                     raise Exception("File type not supported")
                 filename = time.strftime("%d_%m_%Y-%H_%M_%S") + f".{file_extension}"
-                enc_file = encode(file, file_type, message, app.config['ENCODE_FOLDER'] + filename)
+                enc_file = encode(file, file_type, message, os.path.join(app.config['ENCODE_FOLDER'], filename))
 
                 # return send_file(enc_file, as_attachment=True, download_name=filename)
                 flash('Message successfully encoded', 'success')
@@ -165,7 +166,8 @@ def decoded():
 def download(name):
     print("in download")
     # return send_from_directory(app.config['ENCODE_FOLDER'], name, as_attachment=True)
-    return send_file(app.config['ENCODE_FOLDER']+ name, as_attachment=True)
+    path = os.path.join(app.config['ENCODE_FOLDER'], name)
+    return send_file(os.path.relpath(path), as_attachment=True)
     # return render_template('encoded.html', file=session['encoded_file'], name=name)
 
 
