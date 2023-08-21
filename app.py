@@ -8,7 +8,7 @@ import random
 import bcrypt
 
 # from steg import Encode, Decode
-# import steg_lsb 
+# import steg_lsb
 # import gif_lsb
 from steg import encode, decode
 
@@ -16,7 +16,8 @@ from db_schema import db, User
 
 
 UPLOAD_FOLDER = os.path.abspath('./uploads/')
-ENCODE_FOLDER = os.path.abspath('./static/encoded/')
+ENCODE_FOLDER = ('./static/encoded/')
+print(ENCODE_FOLDER)
 DECODE_FOLDER = os.path.abspath('./static/decode/')
 HIDDEN_FOLDER = os.path.abspath('./hidden/')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -91,14 +92,14 @@ def index():
     if request.method == 'POST':
         # if form.validate_on_submit():
         if True:
-            
+
             file = request.files.get('file')
 
             operation = request.args.get('operation')
             print(operation)
             print("just printed operation")
-        
- 
+
+
             if operation == 'encode':
                 message = request.form.get('message')
                 if not(message):
@@ -121,18 +122,19 @@ def index():
                     print(file_type)
                     raise Exception("File type not supported")
                 filename = time.strftime("%d_%m_%Y-%H_%M_%S") + f".{file_extension}"
-                enc_file = encode(file, file_type, message, os.path.join(app.config['ENCODE_FOLDER'], filename))
+                path = os.path.join('stegme', app.config['ENCODE_FOLDER'], filename)
+                enc_file = encode(file, file_type, message, os.path.abspath(path))
 
                 # return send_file(enc_file, as_attachment=True, download_name=filename)
                 flash('Message successfully encoded', 'success')
                 print("encoded")
                 # session['encoded_file'] = enc_file2
                 # session['encoded_filename'] = filename
-                return render_template('encoded.html', filename=filename, filepath=get_file_path(filename))
+                return render_template('encoded.html', filename=filename, filepath=get_file_path(filename), abspath=os.path.abspath)
             elif operation == 'decode':
                 file_type = get_mimetype(file.stream.read())
                 hidden_message = decode(file, file_type)
-               
+
                 print("decode output: ", hidden_message)
                 session['hidden_message'] = hidden_message
                 return redirect(url_for('decoded'))
@@ -150,7 +152,7 @@ def decoded():
 # @app.route('/genfile', methods=['GET'])
 # def gen_file():
 
-    
+
 #     categories='nature, city, technology, food, still_life, abstract, wildlife'.split(", ")
 
 #     api_url = 'https://api.api-ninjas.com/v1/randomimage?category={}'.format(category)
@@ -187,14 +189,14 @@ def register():
             email = request.form['email']
             password = request.form['password']
             confirm = request.form['confirm']
-            
+
             if User.query.filter_by(email=email).first():
                 flash('Email address already registered. Please try again with a different email address or log in', category='error')
             elif (password != confirm) :
                 flash('Passwords do not match', category='error')
-            
+
             else:
-                hashed = bcrypt.hashpw(password.encode(), salt=bcrypt.gensalt())  
+                hashed = bcrypt.hashpw(password.encode(), salt=bcrypt.gensalt())
                 new_user = User(email, hashed)
                 new_user.fname = fname
                 new_user.surname = surname
