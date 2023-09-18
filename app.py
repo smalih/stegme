@@ -1,11 +1,21 @@
 import os
-from flask import Flask, flash, render_template, request, redirect, url_for, send_from_directory, send_file, session
-from flask_login import LoginManager, login_user, logout_user, current_user, login_required
+from flask import (
+    Flask, flash, render_template,
+    request, redirect, url_for,
+    send_from_directory, send_file, session
+)
+
+from flask_login import (
+    LoginManager, login_user, logout_user,
+    current_user, login_required
+)
+
 from forms import UploadForm, RegisterForm, LoginForm
 import requests
 import time
 import random
 import bcrypt
+import magic
 
 # from steg import Encode, Decode
 # import steg_lsb
@@ -29,7 +39,11 @@ app.config['HIDDEN_FOLDER'] = HIDDEN_FOLDER
 app.config['ENCODE_FOLDER'] = ENCODE_FOLDER
 app.config['DECODE_FOLDER'] = DECODE_FOLDER
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-app.config['ACCEPTED_MIMETYPES_EXTENSIONS'] = {'image/png': 'png', 'image/jpeg': 'jpg', 'image/gif': 'gif'}
+app.config['ACCEPTED_MIMETYPES_EXTENSIONS'] = {
+                                                'image/png': 'png',
+                                                'image/jpeg': 'jpg',
+                                                'image/gif': 'gif'
+                                              }
 
 db.init_app(app)
 
@@ -44,46 +58,61 @@ login_manager.login_view = 'login'
 login_manager.login_message_category = 'warning'
 login_manager.init_app(app)
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-category = 'nature'
-categories='nature, city, technology, food, still_life, abstract, wildlife'.split(", ")
 
+categories = ['nature',
+              'city',
+              'technology',
+              'food',
+              'still_life',
+              'abstract',
+              'wildlife']
 
-
-import magic
 
 def get_file_path(filename):
     path = os.path.join(app.config['ENCODE_FOLDER'], filename)
     return os.path.relpath(path)
+
 
 def get_mimetype(data: bytes) -> str:
     """Get the mimetype from file data."""
     f = magic.Magic(mime=True)
     return f.from_buffer(data)
 
+
 def get_accepted_mimetypes():
     return_str = ""
     for mimetype in app.config.get('ACCEPTED_MIMETYPES_EXTENSIONS').keys():
-        return_str+=mimetype
-        return_str+=", "
+        return_str += mimetype
+        return_str += ", "
     if return_str:
         return_str = return_str[:-2]
     return return_str
 
+
 def get_random_image_from_api():
-    api_url = f'https://api.api-ninjas.com/v1/randomimage?category={random.choice(categories)}'
-    response = requests.get(api_url, headers={'X-Api-Key': 'vUkWtBsXjrU12mz7Ep8YdQ==TYN8vUz4sZ34Rfe2', 'Accept': 'image/png'}, stream=True)
+    api_url = (f'https://api.api-ninjas.com/v1/randomimage?'
+               'category={random.choice(categories)}')
+
+    response = requests.get(api_url,
+                            headers={
+                                    'X-Api-Key': 'vUkWtBsXjrU12mz7Ep8YdQ==TYN8vUz4sZ34Rfe2',
+                                    'Accept': 'image/png'
+                                     },
+                            stream=True
+                            )
     if response.status_code == requests.codes.ok:
         return response.raw
     raise ValueError("Error - status code NOT OK")
-
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -99,19 +128,17 @@ def index():
             print(operation)
             print("just printed operation")
 
-
             if operation == 'encode':
                 message = request.form.get('message')
-                if not(message):
+                if not message:
                     flash("Message field cannot be left blank")
                     return redirect(url_for('index'))
-                if not(file) :
+                if not file:
                     print("No file supplied, getting random jpeg from API")
                     file = get_random_image_from_api()
                     print(type(file))
                     print("API file: ", file)
                     file_type = 'image/jpeg'
-
 
                 else:
                     print("file type: ", type(file))
@@ -141,7 +168,6 @@ def index():
 
             return redirect(url_for('index'))
     return render_template('index.html', form=form, accepted_mimetypes=get_accepted_mimetypes())
-
 
 
 @app.route('/decoded', methods=['GET'])
@@ -192,7 +218,7 @@ def register():
 
             if User.query.filter_by(email=email).first():
                 flash('Email address already registered. Please try again with a different email address or log in', category='error')
-            elif (password != confirm) :
+            elif password != confirm:
                 flash('Passwords do not match', category='error')
 
             else:
@@ -203,7 +229,7 @@ def register():
                 db.session.add(new_user)
                 db.session.commit()
                 login_user(new_user)
-                new_user = User.query.filter_by(email=email).first() # is this line needed?
+                new_user = User.query.filter_by(email=email).first()  # is this line needed?
                 flash('You have successfully registered', 'success')
                 return redirect(url_for('index'))
         else:
@@ -229,7 +255,7 @@ def login():
                     remember = True if request.form.get('remember_me') else False
                     login_user(user, remember=remember)
                     print(request.args.get('next'))
-                    return redirect(url_for(request.args.get('next', default='index', type = str)))
+                    return redirect(url_for(request.args.get('next', default='index', type=str)))
                 else:
                     flash('Incorrect password. Please check your email and password match and try again.', category='error')
             else:
@@ -249,6 +275,7 @@ def dbinit():
 
 with app.app_context():
     dbinit()
+
 
 @app.route('/logout')
 def logout():

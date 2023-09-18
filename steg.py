@@ -8,10 +8,12 @@ import numpy as np
 
 terminating_string = "$end$"
 
+
 def set_comment(fp, comment, out_path=None):
 
     exclusive_fp = False
     filename = ''
+
     if isinstance(fp, Path):
         filename = str(fp.resolve())
     elif is_path(fp):
@@ -19,7 +21,7 @@ def set_comment(fp, comment, out_path=None):
 
     if filename:
         fp = open(filename, 'rb')
-        exclusive_fp = True # exclusive_fp means path was passed
+        exclusive_fp = True  # exclusive_fp means path was passed
     try:
         fp.seek(0)
     except (AttributeError, io.UnsupportedOperation):
@@ -29,34 +31,33 @@ def set_comment(fp, comment, out_path=None):
     # skip through data of extension blocks
     # - all extension blocks except comment have a BLOCKSIZE field
     def skip_data():
-        s = fp.read(1) # blocksize
+        s = fp.read(1)  # blocksize
         if s and s[0]:
-            return fp.read(s[0]) # read through next BLOCKSIZE bytes
+            return fp.read(s[0])  # read through next BLOCKSIZE bytes
 
-    s = fp.read(13) # read gif file header
+    s = fp.read(13)  # read gif file header
 
     # first 6 bytes of gif file denote file signature (i.e., GIF)
     # and file version (87a or 89a)
     if s[:6] not in [b'GIF87a', b'GIF89a']:
         raise SyntaxError("File provided is not a gif file")
-    
-    packed = s[10] # 10th byte is the packed value (packed is little endian)
+
+    packed = s[10]  # 10th byte is the packed value (packed is little endian)
 
     # bitwise AND with 10000000
     # if global color table (GCT) exists
     if packed & 128:
 
         # bits 0-2 denote the size of gct, and 7(b10) is 111,
-        # so packed & 7 = packed
+        # so packed & 7 = packed
         # maybe purpose and & is to add/remove padding, and/or conversion
-        
+
         # (spec states num_gct_entries = gct_size + 1)
         num_gct_entries = (packed & 7) + 1
 
-
         # each gct is 3 bytes in size
         # so one gct requires 3 bytes, two gcts 6 bytes, 3 gcts 9 bytes
-        fp.read(3 << num_gct_entries) # NOTE: should this be * rather than <<?
+        fp.read(3 << num_gct_entries)  # NOTE: should this be * rather than <<?
 
     # after will store location of pointer after comment block
     after = None
@@ -64,15 +65,14 @@ def set_comment(fp, comment, out_path=None):
     # mark position to insert comment block
     before = fp.tell()
     after = before
-    s = fp.read(1) # first byte of extension block indicates extension block
-    if s == b'!': # if block is an extension block
+    s = fp.read(1)  # first byte of extension block indicates extension block
+    if s == b'!':  # if block is an extension block
         s = fp.read(1)
-        if s[0] == 254: # if extension block is a comment block
-            
+        if s[0] == 254:  # if extension block is a comment block
             # skip through comment block
             while skip_data():
                 pass
-            after = fp.tell() # mark position of end of comment block
+            after = fp.tell()  # mark position of end of comment block
     fp.seek(0)
     before_bytes = fp.read(before)
     fp.seek(after)
@@ -83,7 +83,7 @@ def set_comment(fp, comment, out_path=None):
     else:
         fp = io.BufferedWriter(io.BytesIO())
         print(type(fp))
-    fp.write(before_bytes) # write all bytes before comment block
+    fp.write(before_bytes)  # write all bytes before comment block
 
     # write comment block
     if comment:
@@ -96,15 +96,15 @@ def set_comment(fp, comment, out_path=None):
             comment = comment.encode()
         if not isinstance(comment, bytes):
             raise SyntaxError("Comment provided is not a string or binary string")
-        
+
         # write comment in blocks of 256 bytes (1 byte for subbblock size, up to 255 bytes for comment)
         for i in range(0, len(comment), 255):
             subblock = comment[i: i + 255]
             # write subblock size + comment partition to file
             fp.write(_binary.o8(len(subblock)) + subblock)
 
-        fp.write(_binary.o8(0)) # write block terminator
-    fp.write(after_bytes) # write remaining bytes
+        fp.write(_binary.o8(0))  # write block terminator
+    fp.write(after_bytes)  # write remaining bytes
     fp.close()
     if out_path is None:
         print("gif return", fp)
@@ -117,8 +117,8 @@ def decode_gif(fp):
         comment = b''
         while True:
             s = fp.read(1)
-            if s == _binary.o8(0): # if terminator
-                return comment 
+            if s == _binary.o8(0):  # if terminator
+                return comment
             comment += fp.read(s[0])
 
     exclusive_fp = False
@@ -130,14 +130,14 @@ def decode_gif(fp):
 
     if filename:
         fp = open(filename, 'rb')
-        exclusive_fp = True # exclusive_fp means path was passed
+        exclusive_fp = True  # exclusive_fp means path was passed
     try:
         fp.seek(0)
     except (AttributeError, io.UnsupportedOperation):
         fp = io.BytesIO(fp.read())
         exclusive_fp = True
 
-    s = fp.read(13) # read gif file header
+    s = fp.read(13)  # read gif file header
     if s[:6] not in [b'GIF87a', b'GIF89a']:
         raise SyntaxError("File provided is not a gif file")
     packed = s[10]
@@ -154,7 +154,6 @@ def decode_gif(fp):
             comment = comment.decode()
             print(comment)
             return comment
-
 
 
 def encode_img(src, message, dest=None):
@@ -175,19 +174,18 @@ def encode_img(src, message, dest=None):
         raise ValueError("Unable detect image mode of input image")
 
     total_pixels = len(img_array)
-    
+
     message += terminating_string
     b_message = ''.join([format(ord(i), "08b") for i in message])
     min_pixels = ceil(len(b_message) / 3)
     if min_pixels > total_pixels:
         raise ValueError("input image does not have enough bits to encode message. Please choose an image with a larger file size")
-
     # print(img_array.size) # no. of r,g,b,a bytes (= len(img_array) * 4)
     # print(len(img_array)) # no. pixels (= width * height)
-    
+
     index = 0
     for pixel in range(min_pixels):
-        for colour in range(0,3):
+        for colour in range(0, 3):
             # print(img_array[pixel][colour])
             if index >= len(b_message):
                 print("hello")
@@ -195,10 +193,10 @@ def encode_img(src, message, dest=None):
                 img_array[pixel][colour] = int(bin(img_array[pixel][colour])[2:7] + b_message[index], 2)
             except IndexError:
                 print("Error: ", pixel, index, len(b_message))
-                break 
-            index+=1
-    
-    img_array=img_array.reshape(height, width, n)
+                break
+            index += 1
+
+    img_array = img_array.reshape(height, width, n)
     enc_img = Image.fromarray(img_array.astype('uint8'), input_img.mode)
     # s = BytesIO()
     # enc_img.save(s, format="png")
@@ -207,6 +205,7 @@ def encode_img(src, message, dest=None):
         enc_img.save(dest, format="PNG")
     else:
         return enc_img
+
 
 def decode_img(src):
     try:
@@ -222,7 +221,7 @@ def decode_img(src):
     break_loop = False
     for pixel in range(len(img_array)):
         for colour in range(3):
-            hidden_b_message+=bin(img_array[pixel][colour])[-1]
+            hidden_b_message += bin(img_array[pixel][colour])[-1]
             # print(hidden_b_message)
             if hidden_b_message[-len(terminating_binary):] == terminating_binary:
                 print("yo")
@@ -236,32 +235,24 @@ def decode_img(src):
         print("Image does not contain hidden_message")
         return
     # print(hidden_b_message)
-    hidden_message = ""      
+    hidden_message = ""
     for i in range(0, len(hidden_b_message) - len(terminating_binary), 8):
-        hidden_message += chr(int(hidden_b_message[i:i+8], 2))
+        hidden_message += chr(int(hidden_b_message[i:i + 8], 2))
     print("hidden message", hidden_message)
     return hidden_message
 
 
-
-
-
 def encode(fp, file_type, message, dest=None):
     if file_type == 'image/gif':
-         return set_comment(fp, message, dest)
+        return set_comment(fp, message, dest)
     elif file_type in ['image/png', 'image/jpeg']:
         return encode_img(fp, message, dest)
     else:
         raise Exception(f'File type {file_type} not supported')
 
 
-
-
-
 def decode(fp, file_type):
     if file_type == 'image/gif':
-       return decode_gif(fp)
+        return decode_gif(fp)
     elif file_type in ['image/png', 'image/jpeg']:
         return decode_img(fp)
-
-
