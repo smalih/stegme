@@ -1,2 +1,2 @@
 # stegme
-[![Check Style](https://github.com/smalih/stegme/actions/workflows/style.yaml/badge.svg)](https://github.com/smalih/stegme/actions/workflows/style.yaml)
+Simple web-based application tool to hide messages within png, jpeg and GIF files!
