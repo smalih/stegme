@@ -100,8 +100,7 @@ def get_accepted_mimetypes():
 
 
 def get_random_image_from_api():
-    api_url = (f'https://api.api-ninjas.com/v1/randomimage?'
-               'category={random.choice(categories)}')
+    api_url = (f'https://api.api-ninjas.com/v1/randomimage?category={random.choice(categories)}')
 
     response = requests.get(api_url,
                             headers={
@@ -149,7 +148,8 @@ def index():
                     print(file_type)
                     raise Exception("File type not supported")
                 filename = time.strftime("%d_%m_%Y-%H_%M_%S") + f".{file_extension}"
-                path = os.path.join('stegme', app.config['ENCODE_FOLDER'], filename)
+                # path = os.path.join('stegme', app.config['ENCODE_FOLDER'], filename)  # pythonanywhere path URL
+                path = os.path.join(app.config['ENCODE_FOLDER'], filename)
                 enc_file = encode(file, file_type, message, os.path.abspath(path))
 
                 # return send_file(enc_file, as_attachment=True, download_name=filename)
